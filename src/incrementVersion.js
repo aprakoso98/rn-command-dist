@@ -29,8 +29,8 @@ function incrementVersion() {
     var _b = bin_1.theParams, _type = _b["--type"], _c = _b["-t"], __type = _c === void 0 ? 'dev' : _c, _platform = _b["--platform"], _d = _b["-p"], __platform = _d === void 0 ? 'android' : _d;
     var platform = (_platform !== null && _platform !== void 0 ? _platform : __platform);
     var releaseType = _type !== null && _type !== void 0 ? _type : __type;
-    var releaseConfigPath = bin_1.ROOT_PATH + "/envs/config-" + releaseType + ".json";
-    var releaseConfig = require("" + releaseConfigPath);
+    var releaseConfigPath = "".concat(bin_1.ROOT_PATH, "/envs/config-").concat(releaseType, ".json");
+    var releaseConfig = require("".concat(releaseConfigPath));
     var _e = releaseConfig, _f = platform, platformConfig = _e[_f], otherPlatform = __rest(_e, [typeof _f === "symbol" ? _f : _f + ""]);
     var keys = Object.keys(bin_1.theParams);
     var newReleaseConfigPlatform = keys.reduce(function (ret, key) {

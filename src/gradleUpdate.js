@@ -30,13 +30,13 @@ exports.__esModule = true;
 var fs = require("fs");
 var bin_1 = require("../bin");
 function gradleUpdate() {
-    var gradleFile = bin_1.ROOT_PATH + "/android/gradle.properties";
-    var configFilePath = bin_1.ROOT_PATH + "/envs/gradle-properties.json";
+    var gradleFile = "".concat(bin_1.ROOT_PATH, "/android/gradle.properties");
+    var configFilePath = "".concat(bin_1.ROOT_PATH, "/envs/gradle-properties.json");
     var _a = bin_1.theParams, type = _a["--type"], _b = _a["-t"], _type = _b === void 0 ? 'dev' : _b, _platform = _a["--platform"], _c = _a["-p"], __platform = _c === void 0 ? 'android' : _c;
     var platform = (_platform !== null && _platform !== void 0 ? _platform : __platform);
     var releaseType = type !== null && type !== void 0 ? type : _type;
-    var releaseConfigPath = bin_1.ROOT_PATH + "/envs/config-" + releaseType + ".json";
-    var releaseConfigAll = require("" + releaseConfigPath);
+    var releaseConfigPath = "".concat(bin_1.ROOT_PATH, "/envs/config-").concat(releaseType, ".json");
+    var releaseConfigAll = require("".concat(releaseConfigPath));
     var _d = releaseConfigAll, _e = platform, releaseConfig = _d[_e];
     if (['dev', 'prod'].includes(releaseType)) {
         var properties = fs.readFileSync(gradleFile, { encoding: 'utf8' })
@@ -48,10 +48,10 @@ function gradleUpdate() {
                 ret[key] = value.join('=');
             return ret;
         }, {});
-        var config = require("" + configFilePath);
+        var config = require("".concat(configFilePath));
         var newConfig_1 = __assign(__assign(__assign(__assign({}, properties), config), releaseConfig), { CURRENT_CONFIG: releaseType });
         var parsed = Object.keys(newConfig_1)
-            .map(function (key) { return key + "=" + newConfig_1[key]; })
+            .map(function (key) { return "".concat(key, "=").concat(newConfig_1[key]); })
             .join('\n');
         fs.writeFileSync(gradleFile, parsed);
         fs.writeFileSync(configFilePath, JSON.stringify(newConfig_1, undefined, 4));

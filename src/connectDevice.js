@@ -41,7 +41,7 @@ var child_process_1 = require("child_process");
 var bin_1 = require("../bin");
 function getDeviceLists() {
     return new Promise(function (resolve) {
-        child_process_1.exec('adb shell ip route', function (err, stdout) {
+        (0, child_process_1.exec)('adb shell ip route', function (err, stdout) {
             if (err) {
                 console.error('error: No devices/emulators found');
             }
@@ -83,7 +83,7 @@ function connectDevice() {
                     if ((devices === null || devices === void 0 ? void 0 : devices.length) > 0) {
                         selectedDevice = devices.filter(function (a) { return (a === null || a === void 0 ? void 0 : a.dev) === target; });
                         if (selectedDevice.length > 0) {
-                            child_process_1.exec("adb disconnect; adb tcpip 5555; adb connect " + selectedDevice[0].src + ":5555", function (err, msg) {
+                            (0, child_process_1.exec)("adb disconnect; adb tcpip 5555; adb connect ".concat(selectedDevice[0].src, ":5555"), function (err, msg) {
                                 if (err)
                                     console.error(err);
                                 else

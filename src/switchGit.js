@@ -64,7 +64,7 @@ function switchGit() {
                 case 1:
                     selectedUser = (_b.sent()).selectedUser;
                     _a = USERS[selectedUser], email = _a.email, name = _a.name;
-                    bin_1.thread("git config --global user.name \"" + name + "\"; git config --global user.email \"" + email + "\"; git config --list");
+                    (0, bin_1.thread)("git config --global user.name \"".concat(name, "\"; git config --global user.email \"").concat(email, "\"; git config --list"));
                     return [2 /*return*/];
             }
         });

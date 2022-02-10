@@ -46,14 +46,14 @@ function installApp() {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    deviceLists = child_process_1.execSync('adb devices').toString().split('\n')
+                    deviceLists = (0, child_process_1.execSync)('adb devices').toString().split('\n')
                         .reduce(function (ret, list) {
                         var index = list.indexOf('\t');
                         if (index > 0)
                             ret.push(list.slice(0, index));
                         return ret;
                     }, []);
-                    fileLists = child_process_1.execSync("ls " + outputFolder).toString();
+                    fileLists = (0, child_process_1.execSync)("ls ".concat(outputFolder)).toString();
                     return [4 /*yield*/, inquirer.prompt([{
                                 type: "list",
                                 name: "selectedDevice",
@@ -71,7 +71,7 @@ function installApp() {
                             }])];
                 case 2:
                     selectedApk = (_a.sent()).selectedApk;
-                    bin_1.thread("adb -s " + selectedDevice + " install \"" + bin_1.ROOT_PATH + "/" + outputFolder + "/" + selectedApk + "\"");
+                    (0, bin_1.thread)("adb -s ".concat(selectedDevice, " install \"").concat(bin_1.ROOT_PATH, "/").concat(outputFolder, "/").concat(selectedApk, "\""));
                     return [2 /*return*/];
             }
         });

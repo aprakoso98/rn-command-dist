@@ -40,7 +40,7 @@ var fs = require("fs");
 var bin_1 = require("../bin");
 function errHandling(err) {
     if (err === null || err === void 0 ? void 0 : err.message)
-        console.log(bin_1.colorize('FgRed'), err === null || err === void 0 ? void 0 : err.message);
+        console.log(colorize('FgRed'), err === null || err === void 0 ? void 0 : err.message);
 }
 function init() {
     return __awaiter(this, void 0, void 0, function () {
@@ -48,10 +48,10 @@ function init() {
         return __generator(this, function (_a) {
             data = JSON.stringify({ ios: {}, android: {} }, null, 4);
             flag = 'wx';
-            fs.mkdir(bin_1.ROOT_PATH + "/envs", errHandling);
-            fs.writeFile(bin_1.ROOT_PATH + "/envs/config-dev.json", data, { flag: flag }, errHandling);
-            fs.writeFile(bin_1.ROOT_PATH + "/envs/config-prod.json", data, { flag: flag }, errHandling);
-            fs.writeFile(bin_1.ROOT_PATH + "/envs/gradle-properties.json", "{}", { flag: flag }, errHandling);
+            fs.mkdir("".concat(bin_1.ROOT_PATH, "/envs"), errHandling);
+            fs.writeFile("".concat(bin_1.ROOT_PATH, "/envs/config-dev.json"), data, { flag: flag }, errHandling);
+            fs.writeFile("".concat(bin_1.ROOT_PATH, "/envs/config-prod.json"), data, { flag: flag }, errHandling);
+            fs.writeFile("".concat(bin_1.ROOT_PATH, "/envs/gradle-properties.json"), "{}", { flag: flag }, errHandling);
             return [2 /*return*/];
         });
     });

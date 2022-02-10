@@ -57,11 +57,11 @@ function buildRun(isBuild) {
                         case 0:
                             if (!(platform === 'android')) return [3 /*break*/, 4];
                             if (!clean) return [3 /*break*/, 2];
-                            return [4 /*yield*/, bin_1.thread(bin_1.THE_COMMAND + " clean")];
+                            return [4 /*yield*/, (0, bin_1.thread)("".concat(bin_1.THE_COMMAND, " clean"))];
                         case 1:
                             _a.sent();
                             _a.label = 2;
-                        case 2: return [4 /*yield*/, bin_1.thread("react-native run-android " + command)];
+                        case 2: return [4 /*yield*/, (0, bin_1.thread)("react-native run-android ".concat(command))];
                         case 3:
                             _a.sent();
                             _a.label = 4;
@@ -77,19 +77,19 @@ function buildRun(isBuild) {
                         case 0:
                             if (!(platform === 'android')) return [3 /*break*/, 6];
                             if (!clean) return [3 /*break*/, 2];
-                            return [4 /*yield*/, bin_1.thread(bin_1.THE_COMMAND + " clean")];
+                            return [4 /*yield*/, (0, bin_1.thread)("".concat(bin_1.THE_COMMAND, " clean"))];
                         case 1:
                             _a.sent();
                             _a.label = 2;
                         case 2:
                             if (!(buildType === 'assemble')) return [3 /*break*/, 4];
-                            return [4 /*yield*/, bin_1.thread("cd android; ./gradlew assembleRelease")];
+                            return [4 /*yield*/, (0, bin_1.thread)("cd android; ./gradlew assembleRelease")];
                         case 3:
                             _a.sent();
                             return [3 /*break*/, 6];
                         case 4:
                             if (!(buildType === 'bundle')) return [3 /*break*/, 6];
-                            return [4 /*yield*/, bin_1.thread("cd android; ./gradlew bundleRelease")];
+                            return [4 /*yield*/, (0, bin_1.thread)("cd android; ./gradlew bundleRelease")];
                         case 5:
                             _a.sent();
                             _a.label = 6;
@@ -112,7 +112,7 @@ function buildRun(isBuild) {
                     releaseType = (_type !== null && _type !== void 0 ? _type : __type);
                     clean = ((_clean !== null && _clean !== void 0 ? _clean : __clean) === 'true') ? true : false;
                     if (!(platform === 'android')) return [3 /*break*/, 2];
-                    return [4 /*yield*/, bin_1.thread(bin_1.THE_COMMAND + " gradle-update -p=\"" + platform + "\" -t=\"" + releaseType + "\"")];
+                    return [4 /*yield*/, (0, bin_1.thread)("".concat(bin_1.THE_COMMAND, " gradle-update -p=\"").concat(platform, "\" -t=\"").concat(releaseType, "\""))];
                 case 1:
                     _f.sent();
                     _f.label = 2;

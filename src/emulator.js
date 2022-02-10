@@ -45,7 +45,7 @@ function runEmulator() {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    listAvds = child_process_1.execSync('emulator -list-avds')
+                    listAvds = (0, child_process_1.execSync)('emulator -list-avds')
                         .toString()
                         .split('\n')
                         .filter(function (avd) { return avd !== ''; });
@@ -57,7 +57,7 @@ function runEmulator() {
                             }])];
                 case 1:
                     selectedAvd = (_a.sent()).selectedAvd;
-                    bin_1.thread("cd $ANDROID_HOME/emulator; ./emulator @" + selectedAvd);
+                    (0, bin_1.thread)("cd $ANDROID_HOME/emulator; ./emulator @".concat(selectedAvd));
                     return [2 /*return*/];
             }
         });
