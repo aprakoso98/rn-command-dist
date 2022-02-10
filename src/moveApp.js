@@ -7,7 +7,6 @@ var commander_1 = require("commander");
 var ANDROID_PATH = "android";
 var outputFolder = "outputs";
 function moveApp(args, options) {
-    var _a;
     var isAab = args === 'aab';
     var additional = options.additional, source = options.source, _filename = options.filename;
     var projectName = require("".concat(process.env.PWD, "/package.json")).name;
@@ -19,10 +18,11 @@ function moveApp(args, options) {
         pathFile = aabPath;
     }
     else {
-        filename = (_a = _filename !== null && _filename !== void 0 ? _filename : __filename) !== null && _a !== void 0 ? _a : "".concat(projectName, "-").concat(moment().format('YYYY-MM-DD-HH-mm-ss'), ".apk");
+        filename = _filename !== null && _filename !== void 0 ? _filename : "".concat(projectName, "-").concat(moment().format('YYYY-MM-DD-HH-mm-ss'), ".apk");
     }
     filename = "".concat(additional).concat(filename);
-    (0, child_process_1.exec)("cp \"".concat(pathFile, "\" \"./").concat(outputFolder, "/").concat(filename, "\""), function (err) {
+    var command = "cp \"".concat(pathFile, "\" \"./").concat(outputFolder, "/").concat(filename, "\"");
+    (0, child_process_1.exec)(command, function (err) {
         if (err) {
             console.error(err);
             return;
