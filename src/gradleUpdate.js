@@ -27,17 +27,17 @@ var __read = (this && this.__read) || function (o, n) {
     return ar;
 };
 exports.__esModule = true;
+exports.gradleUpdateCommand = void 0;
 var fs = require("fs");
+var commander_1 = require("commander");
 var bin_1 = require("../bin");
-function gradleUpdate() {
+function gradleUpdate(_a) {
+    var platform = _a.platform, releaseType = _a.type;
     var gradleFile = "".concat(bin_1.ROOT_PATH, "/android/gradle.properties");
     var configFilePath = "".concat(bin_1.ROOT_PATH, "/envs/gradle-properties.json");
-    var _a = bin_1.theParams, type = _a["--type"], _b = _a["-t"], _type = _b === void 0 ? 'dev' : _b, _platform = _a["--platform"], _c = _a["-p"], __platform = _c === void 0 ? 'android' : _c;
-    var platform = (_platform !== null && _platform !== void 0 ? _platform : __platform);
-    var releaseType = type !== null && type !== void 0 ? type : _type;
     var releaseConfigPath = "".concat(bin_1.ROOT_PATH, "/envs/config-").concat(releaseType, ".json");
     var releaseConfigAll = require("".concat(releaseConfigPath));
-    var _d = releaseConfigAll, _e = platform, releaseConfig = _d[_e];
+    var _b = releaseConfigAll, _c = platform, releaseConfig = _b[_c];
     if (['dev', 'prod'].includes(releaseType)) {
         var properties = fs.readFileSync(gradleFile, { encoding: 'utf8' })
             .split(/\n/g)
@@ -57,4 +57,11 @@ function gradleUpdate() {
         fs.writeFileSync(configFilePath, JSON.stringify(newConfig_1, undefined, 4));
     }
 }
-exports["default"] = gradleUpdate;
+var gradleUpdateCommand = function () { return commander_1.program
+    .command('gradle-update')
+    .action(gradleUpdate)
+    .addOption(new commander_1.Option('-p, --platform <platform>', 'Platforms')
+    .choices(['android', 'ios'])["default"]('android'))
+    .addOption(new commander_1.Option('-t, --type <type>', 'Platforms')
+    .choices(['dev', 'prod'])["default"]('dev')); };
+exports.gradleUpdateCommand = gradleUpdateCommand;

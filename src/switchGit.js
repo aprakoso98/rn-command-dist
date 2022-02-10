@@ -36,24 +36,33 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+exports.switchGitCommand = void 0;
 var inquirer = require("inquirer");
+var commander_1 = require("commander");
 var bin_1 = require("../bin");
 var USERS = {
     aprakoso98: {
-        name: 'aprakoso98',
+        username: 'aprakoso98',
         email: 'adhyt.scott@gmail.com'
     },
-    flashCoffee: {
-        name: 'bambang.ap',
+    'bambang.ap': {
+        username: 'bambang.ap',
         email: 'bambang.ap@flash-coffee.com'
     }
 };
-function switchGit() {
+function switchGit(_a) {
+    var username = _a.username, email = _a.email;
     return __awaiter(this, void 0, void 0, function () {
-        var listUsers, selectedUser, _a, email, name;
+        var user, listUsers, selectedUser, mail, name;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
+                    user = {};
+                    if (!(username && email)) return [3 /*break*/, 1];
+                    user.email = email;
+                    user.username = username;
+                    return [3 /*break*/, 3];
+                case 1:
                     listUsers = Object.keys(USERS);
                     return [4 /*yield*/, inquirer.prompt([{
                                 type: "list",
@@ -61,13 +70,31 @@ function switchGit() {
                                 message: "Select user you want to replace",
                                 choices: listUsers
                             }])];
-                case 1:
+                case 2:
                     selectedUser = (_b.sent()).selectedUser;
-                    _a = USERS[selectedUser], email = _a.email, name = _a.name;
-                    (0, bin_1.thread)("git config --global user.name \"".concat(name, "\"; git config --global user.email \"").concat(email, "\"; git config --list"));
+                    user = USERS[selectedUser];
+                    _b.label = 3;
+                case 3:
+                    mail = user.email, name = user.username;
+                    (0, bin_1.thread)("git config --global user.name \"".concat(name, "\"; git config --global user.email \"").concat(mail, "\"; git config --list"));
                     return [2 /*return*/];
             }
         });
     });
 }
-exports["default"] = switchGit;
+var switchGitCommand = function () { return commander_1.program
+    .command('git-switch')
+    .action(switchGit)
+    .addOption(new commander_1.Option('-u, --username <username>', 'username')
+    .argParser(function (username) {
+    if (username.length > 2)
+        return username;
+    throw new commander_1.InvalidArgumentError('Please input valid username');
+}))
+    .addOption(new commander_1.Option('-e, --email <email>', 'email')
+    .argParser(function (email) {
+    if (email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/))
+        return email;
+    throw new commander_1.InvalidArgumentError('Not an valid email');
+})); };
+exports.switchGitCommand = switchGitCommand;

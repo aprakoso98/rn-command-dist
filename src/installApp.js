@@ -36,8 +36,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+exports.installAppCommand = void 0;
 var inquirer = require("inquirer");
 var child_process_1 = require("child_process");
+var commander_1 = require("commander");
 var bin_1 = require("../bin");
 var outputFolder = "outputs";
 function installApp() {
@@ -77,4 +79,7 @@ function installApp() {
         });
     });
 }
-exports["default"] = installApp;
+var installAppCommand = function () { return commander_1.program
+    .command('install')
+    .action(installApp); };
+exports.installAppCommand = installAppCommand;

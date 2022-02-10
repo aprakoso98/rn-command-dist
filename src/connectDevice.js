@@ -36,9 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.getDeviceLists = void 0;
+exports.connectDeviceCommand = void 0;
 var child_process_1 = require("child_process");
-var bin_1 = require("../bin");
+var commander_1 = require("commander");
 function getDeviceLists() {
     return new Promise(function (resolve) {
         (0, child_process_1.exec)('adb shell ip route', function (err, stdout) {
@@ -68,18 +68,15 @@ function getDeviceLists() {
         });
     });
 }
-exports.getDeviceLists = getDeviceLists;
-function connectDevice() {
+function connectDevice(_a) {
+    var target = _a.target;
     return __awaiter(this, void 0, void 0, function () {
-        var _a, _target, _b, __target, target, devices, selectedDevice;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
-                case 0:
-                    _a = bin_1.theParams, _target = _a["--target"], _b = _a["-t"], __target = _b === void 0 ? 'wlan0' : _b;
-                    target = _target !== null && _target !== void 0 ? _target : __target;
-                    return [4 /*yield*/, getDeviceLists()];
+        var devices, selectedDevice;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
+                case 0: return [4 /*yield*/, getDeviceLists()];
                 case 1:
-                    devices = _c.sent();
+                    devices = _b.sent();
                     if ((devices === null || devices === void 0 ? void 0 : devices.length) > 0) {
                         selectedDevice = devices.filter(function (a) { return (a === null || a === void 0 ? void 0 : a.dev) === target; });
                         if (selectedDevice.length > 0) {
@@ -98,4 +95,8 @@ function connectDevice() {
         });
     });
 }
-exports["default"] = connectDevice;
+var connectDeviceCommand = function () { return commander_1.program
+    .command('connect')
+    .action(connectDevice)
+    .addOption(new commander_1.Option('-t, --target <target>', 'target')["default"]('wlan0')); };
+exports.connectDeviceCommand = connectDeviceCommand;

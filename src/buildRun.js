@@ -35,20 +35,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 exports.__esModule = true;
+exports.buildRunCommand = void 0;
+var commander_1 = require("commander");
 var bin_1 = require("../bin");
-function buildRun(isBuild) {
+function buildRun(args, options) {
     return __awaiter(this, void 0, void 0, function () {
         function runApp() {
             return __awaiter(this, void 0, void 0, function () {
@@ -61,7 +52,7 @@ function buildRun(isBuild) {
                         case 1:
                             _a.sent();
                             _a.label = 2;
-                        case 2: return [4 /*yield*/, (0, bin_1.thread)("react-native run-android ".concat(command))];
+                        case 2: return [4 /*yield*/, (0, bin_1.thread)("npx react-native run-android ".concat(command))];
                         case 3:
                             _a.sent();
                             _a.label = 4;
@@ -98,24 +89,18 @@ function buildRun(isBuild) {
                 });
             });
         }
-        var _a, _type, _b, __type, _clean, _c, __clean, _platform, _d, __platform, _buildType, _e, __buildType, additionalCommand, command, buildType, platform, releaseType, clean;
-        return __generator(this, function (_f) {
-            switch (_f.label) {
+        var buildType, clean, platform, releaseType, additional, isBuild, command;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    _a = bin_1.theParams, _type = _a["--type"], _b = _a["-t"], __type = _b === void 0 ? 'dev' : _b, _clean = _a["--clean"], _c = _a["-c"], __clean = _c === void 0 ? 'false' : _c, _platform = _a["--platform"], _d = _a["-p"], __platform = _d === void 0 ? 'android' : _d, _buildType = _a["--build-type"], _e = _a["-b"], __buildType = _e === void 0 ? 'assemble' : _e, additionalCommand = __rest(_a, ['--type', '-t', '--clean', '-c', '--platform', '-p', '--build-type', '-b']);
-                    command = Object.keys(additionalCommand).reduce(function (ret, key) {
-                        ret.push(key, additionalCommand[key]);
-                        return ret;
-                    }, []).join(' ');
-                    buildType = (_buildType !== null && _buildType !== void 0 ? _buildType : __buildType);
-                    platform = (_platform !== null && _platform !== void 0 ? _platform : __platform);
-                    releaseType = (_type !== null && _type !== void 0 ? _type : __type);
-                    clean = ((_clean !== null && _clean !== void 0 ? _clean : __clean) === 'true') ? true : false;
+                    buildType = options.buildType, clean = options.clean, platform = options.platform, releaseType = options.type, additional = options.additional;
+                    isBuild = args === 'build';
+                    command = additional.replace(/^"|"$/g, '');
                     if (!(platform === 'android')) return [3 /*break*/, 2];
-                    return [4 /*yield*/, (0, bin_1.thread)("".concat(bin_1.THE_COMMAND, " gradle-update -p=\"").concat(platform, "\" -t=\"").concat(releaseType, "\""))];
+                    return [4 /*yield*/, (0, bin_1.thread)("".concat(bin_1.THE_COMMAND, " gradle-update -p ").concat(platform, " -t ").concat(releaseType))];
                 case 1:
-                    _f.sent();
-                    _f.label = 2;
+                    _a.sent();
+                    _a.label = 2;
                 case 2:
                     if (isBuild)
                         buildApp();
@@ -126,4 +111,16 @@ function buildRun(isBuild) {
         });
     });
 }
-exports["default"] = buildRun;
+var buildRunCommand = function () { return commander_1.program
+    .command('run')
+    .action(buildRun)
+    .addArgument(new commander_1.Argument('[string]').choices(['build']))
+    .addOption(new commander_1.Option('-c, --clean', 'Platforms')["default"](false))
+    .addOption(new commander_1.Option('-a, --additional <string>', 'Platforms')["default"](''))
+    .addOption(new commander_1.Option('-p, --platform <platform>', 'Platforms')
+    .choices(['android', 'ios'])["default"]('android'))
+    .addOption(new commander_1.Option('-t, --type <type>', 'Platforms')
+    .choices(['dev', 'prod'])["default"]('dev'))
+    .addOption(new commander_1.Option('-b, --build-type <build-type>', 'Platforms')
+    .choices(['assemble', 'bundle'])["default"]('assemble')); };
+exports.buildRunCommand = buildRunCommand;

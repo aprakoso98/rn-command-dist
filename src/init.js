@@ -36,7 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+exports.initCommand = void 0;
 var fs = require("fs");
+var commander_1 = require("commander");
 var bin_1 = require("../bin");
 function errHandling(err) {
     if (err === null || err === void 0 ? void 0 : err.message)
@@ -56,4 +58,8 @@ function init() {
         });
     });
 }
-exports["default"] = init;
+var initCommand = function () { return commander_1.program
+    .command('init')
+    .description('Init')
+    .action(init); };
+exports.initCommand = initCommand;

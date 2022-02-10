@@ -21,21 +21,37 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
 exports.__esModule = true;
+exports.incrementVersionCommand = void 0;
+var commander_1 = require("commander");
 var fs = require("fs");
 var bin_1 = require("../bin");
-function incrementVersion() {
-    var _a;
-    var _b = bin_1.theParams, _type = _b["--type"], _c = _b["-t"], __type = _c === void 0 ? 'dev' : _c, _platform = _b["--platform"], _d = _b["-p"], __platform = _d === void 0 ? 'android' : _d;
-    var platform = (_platform !== null && _platform !== void 0 ? _platform : __platform);
-    var releaseType = _type !== null && _type !== void 0 ? _type : __type;
-    var releaseConfigPath = "".concat(bin_1.ROOT_PATH, "/envs/config-").concat(releaseType, ".json");
+function incrementVersion(args, _a) {
+    var _b;
+    var platform = _a.platform, type = _a.type;
+    var releaseConfigPath = "".concat(bin_1.ROOT_PATH, "/envs/config-").concat(type, ".json");
     var releaseConfig = require("".concat(releaseConfigPath));
-    var _e = releaseConfig, _f = platform, platformConfig = _e[_f], otherPlatform = __rest(_e, [typeof _f === "symbol" ? _f : _f + ""]);
-    var keys = Object.keys(bin_1.theParams);
+    var _c = releaseConfig, _d = platform, platformConfig = _c[_d], otherPlatform = __rest(_c, [typeof _d === "symbol" ? _d : _d + ""]);
+    var keys = Object.keys(args);
     var newReleaseConfigPlatform = keys.reduce(function (ret, key) {
         var _a;
-        var versionFormat = (_a = bin_1.theParams === null || bin_1.theParams === void 0 ? void 0 : bin_1.theParams[key].split('.')) !== null && _a !== void 0 ? _a : [];
+        var versionFormat = (_a = args === null || args === void 0 ? void 0 : args[key].split('.')) !== null && _a !== void 0 ? _a : [];
         if (key in platformConfig) {
             var exValue = platformConfig[key];
             var newValue = exValue.split('.').map(function (ver, i) {
@@ -50,7 +66,21 @@ function incrementVersion() {
         }
         return ret;
     }, {});
-    var newReleaseConfig = __assign(__assign({}, otherPlatform), (_a = {}, _a[platform] = __assign(__assign({}, platformConfig), newReleaseConfigPlatform), _a));
+    var newReleaseConfig = __assign(__assign({}, otherPlatform), (_b = {}, _b[platform] = __assign(__assign({}, platformConfig), newReleaseConfigPlatform), _b));
     fs.writeFileSync(releaseConfigPath, JSON.stringify(newReleaseConfig, undefined, 4));
 }
-exports["default"] = incrementVersion;
+var incrementVersionCommand = function () { return commander_1.program
+    .command('increment-version')
+    .action(incrementVersion)
+    .addOption(new commander_1.Option('-t, --type <type>', 'Platforms')
+    .choices(['dev', 'prod'])["default"]('dev'))
+    .addOption(new commander_1.Option('-p, --platform <platform>', 'Platforms')
+    .choices(['android', 'ios'])["default"]('android'))
+    .addArgument(new commander_1.Argument('[string]').argParser(function (value) {
+    return value.split(' ').reduce(function (ret, val) {
+        var _a = __read(val.split('='), 2), key = _a[0], value = _a[1];
+        ret[key] = value;
+        return ret;
+    }, {});
+})); };
+exports.incrementVersionCommand = incrementVersionCommand;
