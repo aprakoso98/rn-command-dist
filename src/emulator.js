@@ -43,14 +43,15 @@ var commander_1 = require("commander");
 var bin_1 = require("../bin");
 function runEmulator() {
     return __awaiter(this, void 0, void 0, function () {
-        var listAvds, selectedAvd;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var listAvds, selectedAvd, _a;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
                     listAvds = (0, child_process_1.execSync)('emulator -list-avds')
                         .toString()
                         .split('\n')
                         .filter(function (avd) { return avd !== ''; });
+                    if (!(listAvds.length > 1)) return [3 /*break*/, 2];
                     return [4 /*yield*/, inquirer.prompt([{
                                 type: "list",
                                 name: "selectedAvd",
@@ -58,7 +59,13 @@ function runEmulator() {
                                 choices: listAvds
                             }])];
                 case 1:
-                    selectedAvd = (_a.sent()).selectedAvd;
+                    _a = (_b.sent()).selectedAvd;
+                    return [3 /*break*/, 3];
+                case 2:
+                    _a = listAvds[0];
+                    _b.label = 3;
+                case 3:
+                    selectedAvd = _a;
                     (0, bin_1.thread)("cd $ANDROID_HOME/emulator; ./emulator @".concat(selectedAvd));
                     return [2 /*return*/];
             }
