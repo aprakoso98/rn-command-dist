@@ -50,10 +50,11 @@ function init() {
         return __generator(this, function (_a) {
             data = JSON.stringify({ ios: {}, android: {} }, null, 4);
             flag = 'wx';
-            fs.mkdir("".concat(bin_1.ROOT_PATH, "/envs"), errHandling);
-            fs.writeFile("".concat(bin_1.ROOT_PATH, "/envs/config-dev.json"), data, { flag: flag }, errHandling);
-            fs.writeFile("".concat(bin_1.ROOT_PATH, "/envs/config-prod.json"), data, { flag: flag }, errHandling);
-            fs.writeFile("".concat(bin_1.ROOT_PATH, "/envs/gradle-properties.json"), "{}", { flag: flag }, errHandling);
+            fs.mkdirSync("".concat(bin_1.ROOT_PATH, "/envs"));
+            fs.mkdirSync("".concat(bin_1.ROOT_PATH, "/outputs"));
+            fs.writeFileSync("".concat(bin_1.ROOT_PATH, "/envs/config-dev.json"), data, { flag: flag });
+            fs.writeFileSync("".concat(bin_1.ROOT_PATH, "/envs/config-prod.json"), data, { flag: flag });
+            fs.writeFileSync("".concat(bin_1.ROOT_PATH, "/envs/gradle-properties.json"), "{}", { flag: flag });
             return [2 /*return*/];
         });
     });
