@@ -1,21 +1,19 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.cleanProjectCommand = void 0;
-var commander_1 = require("commander");
-var bin_1 = require("../bin");
-function cleanProject(_a) {
-    var platform = _a.platform;
+const commander_1 = require("commander");
+const methods_1 = require("../methods");
+function cleanProject({ platform }) {
     if (platform === 'ios') {
-        (0, bin_1.thread)('cd ios; xcodebuild clean');
+        (0, methods_1.thread)('cd ios; xcodebuild clean');
     }
     else {
-        (0, bin_1.thread)('cd android; ./gradlew clean');
+        (0, methods_1.thread)('cd android; ./gradlew clean');
     }
 }
-var cleanProjectCommand = function () { return commander_1.program
+const cleanProjectCommand = () => commander_1.program
     .command('clean')
-    .addOption(new commander_1.Option('-p, --platform <platform>', 'Platforms')
-    .choices(['android', 'ios'])["default"]('android'))
-    .description('Clean project')
-    .action(cleanProject); };
+    .description('Clean react-native project')
+    .action(cleanProject)
+    .addOption(methods_1.platformTarget);
 exports.cleanProjectCommand = cleanProjectCommand;

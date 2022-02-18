@@ -1,126 +1,45 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.buildRunCommand = void 0;
-var commander_1 = require("commander");
-var bin_1 = require("../bin");
-function buildRun(args, options) {
-    return __awaiter(this, void 0, void 0, function () {
-        function runApp() {
-            return __awaiter(this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            if (!(platform === 'android')) return [3 /*break*/, 4];
-                            if (!clean) return [3 /*break*/, 2];
-                            return [4 /*yield*/, (0, bin_1.thread)("".concat(bin_1.THE_COMMAND, " clean"))];
-                        case 1:
-                            _a.sent();
-                            _a.label = 2;
-                        case 2: return [4 /*yield*/, (0, bin_1.thread)("npx react-native run-android ".concat(command))];
-                        case 3:
-                            _a.sent();
-                            _a.label = 4;
-                        case 4: return [2 /*return*/];
-                    }
-                });
-            });
+const commander_1 = require("commander");
+const methods_1 = require("../methods");
+async function buildRun(args, options) {
+    const { buildType, clean, platform, type: releaseType, additional } = options;
+    const isBuild = args === 'build';
+    const command = additional.replace(/^"|"$/g, '');
+    if (platform === 'android') {
+        await (0, methods_1.thread)(`${methods_1.THE_COMMAND} gradle-update -p ${platform} -t ${releaseType}`);
+    }
+    async function runApp() {
+        if (platform === 'android') {
+            if (clean)
+                await (0, methods_1.thread)(`${methods_1.THE_COMMAND} clean`);
+            await (0, methods_1.thread)(`npx react-native run-android ${command}`);
         }
-        function buildApp() {
-            return __awaiter(this, void 0, void 0, function () {
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            if (!(platform === 'android')) return [3 /*break*/, 6];
-                            if (!clean) return [3 /*break*/, 2];
-                            return [4 /*yield*/, (0, bin_1.thread)("".concat(bin_1.THE_COMMAND, " clean"))];
-                        case 1:
-                            _a.sent();
-                            _a.label = 2;
-                        case 2:
-                            if (!(buildType === 'assemble')) return [3 /*break*/, 4];
-                            return [4 /*yield*/, (0, bin_1.thread)("cd android; ./gradlew assembleRelease")];
-                        case 3:
-                            _a.sent();
-                            return [3 /*break*/, 6];
-                        case 4:
-                            if (!(buildType === 'bundle')) return [3 /*break*/, 6];
-                            return [4 /*yield*/, (0, bin_1.thread)("cd android; ./gradlew bundleRelease")];
-                        case 5:
-                            _a.sent();
-                            _a.label = 6;
-                        case 6: return [2 /*return*/];
-                    }
-                });
-            });
+    }
+    async function buildApp() {
+        if (platform === 'android') {
+            if (clean)
+                await (0, methods_1.thread)(`${methods_1.THE_COMMAND} clean`);
+            if (buildType === 'assemble')
+                await (0, methods_1.thread)(`cd android; ./gradlew assembleRelease`);
+            else if (buildType === 'bundle')
+                await (0, methods_1.thread)(`cd android; ./gradlew bundleRelease`);
         }
-        var buildType, clean, platform, releaseType, additional, isBuild, command;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    buildType = options.buildType, clean = options.clean, platform = options.platform, releaseType = options.type, additional = options.additional;
-                    isBuild = args === 'build';
-                    command = additional.replace(/^"|"$/g, '');
-                    if (!(platform === 'android')) return [3 /*break*/, 2];
-                    return [4 /*yield*/, (0, bin_1.thread)("".concat(bin_1.THE_COMMAND, " gradle-update -p ").concat(platform, " -t ").concat(releaseType))];
-                case 1:
-                    _a.sent();
-                    _a.label = 2;
-                case 2:
-                    if (isBuild)
-                        buildApp();
-                    else
-                        runApp();
-                    return [2 /*return*/];
-            }
-        });
-    });
+    }
+    if (isBuild)
+        buildApp();
+    else
+        runApp();
 }
-var buildRunCommand = function () { return commander_1.program
+const buildRunCommand = () => commander_1.program
     .command('run')
+    .description('Helper command to run or build react-native project')
     .action(buildRun)
-    .addArgument(new commander_1.Argument('[string]').choices(['build']))
-    .addOption(new commander_1.Option('-c, --clean', 'Platforms')["default"](false))
-    .addOption(new commander_1.Option('-a, --additional <string>', 'Platforms')["default"](''))
-    .addOption(new commander_1.Option('-p, --platform <platform>', 'Platforms')
-    .choices(['android', 'ios'])["default"]('android'))
-    .addOption(new commander_1.Option('-t, --type <type>', 'Platforms')
-    .choices(['dev', 'prod'])["default"]('dev'))
-    .addOption(new commander_1.Option('-b, --build-type <build-type>', 'Platforms')
-    .choices(['assemble', 'bundle'])["default"]('assemble')); };
+    .addArgument(new commander_1.Argument('[string]', 'Build the project').choices(['build']))
+    .addOption(new commander_1.Option('-c, --clean', 'Clean the project before execute run or build').default(false))
+    .addOption(new commander_1.Option('-a, --additional <string>', 'Additional script on react-native command').default(''))
+    .addOption(methods_1.platformTarget)
+    .addOption(methods_1.releaseType)
+    .addOption(methods_1.androidBuildTypeOption);
 exports.buildRunCommand = buildRunCommand;

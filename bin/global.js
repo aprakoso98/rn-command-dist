@@ -1,6 +1,6 @@
 "use strict";
 /// <reference path="global.d.ts" />
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports._COLORS = void 0;
 exports._COLORS = {
     _Reset: "\x1b[0m",
@@ -25,17 +25,13 @@ exports._COLORS = {
     BgBlue: "\x1b[44m",
     BgMagenta: "\x1b[45m",
     BgCyan: "\x1b[46m",
-    BgWhite: "\x1b[47m"
+    BgWhite: "\x1b[47m",
 };
 globalThis.COLORS = exports._COLORS;
 globalThis.colorize = function (color) {
-    var selectedColor = exports._COLORS[color !== null && color !== void 0 ? color : 'FgWhite'];
-    return "".concat(selectedColor, "%s").concat(exports._COLORS._Reset);
+    const selectedColor = exports._COLORS[color ?? 'FgWhite'];
+    return `${selectedColor}%s${exports._COLORS._Reset}`;
 };
-globalThis.prettyConsole = function () {
-    var objects = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        objects[_i] = arguments[_i];
-    }
-    objects.map(function (d) { return console.log(JSON.stringify(d, null, 4)); });
+globalThis.prettyConsole = function (...objects) {
+    objects.map(d => console.log(JSON.stringify(d, null, 4)));
 };

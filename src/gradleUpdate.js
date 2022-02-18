@@ -1,67 +1,56 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
 };
-var __read = (this && this.__read) || function (o, n) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator];
-    if (!m) return o;
-    var i = m.call(o), r, ar = [], e;
-    try {
-        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
-    }
-    catch (error) { e = { error: error }; }
-    finally {
-        try {
-            if (r && !r.done && (m = i["return"])) m.call(i);
-        }
-        finally { if (e) throw e.error; }
-    }
-    return ar;
-};
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.gradleUpdateCommand = void 0;
-var fs = require("fs");
-var commander_1 = require("commander");
-var bin_1 = require("../bin");
-function gradleUpdate(_a) {
-    var platform = _a.platform, releaseType = _a.type;
-    var gradleFile = "".concat(bin_1.ROOT_PATH, "/android/gradle.properties");
-    var configFilePath = "".concat(bin_1.ROOT_PATH, "/envs/gradle-properties.json");
-    var releaseConfigPath = "".concat(bin_1.ROOT_PATH, "/envs/config-").concat(releaseType, ".json");
-    var releaseConfigAll = require("".concat(releaseConfigPath));
-    var _b = releaseConfigAll, _c = platform, releaseConfig = _b[_c];
+const fs = __importStar(require("fs"));
+const commander_1 = require("commander");
+const methods_1 = require("../methods");
+function gradleUpdate({ platform, type: releaseType }) {
+    const gradleFile = `${methods_1.ROOT_PATH}/android/gradle.properties`;
+    const configFilePath = `${methods_1.ROOT_PATH}/envs/gradle-properties.json`;
+    const releaseConfigPath = `${methods_1.ROOT_PATH}/envs/config-${releaseType}.json`;
+    const releaseConfigAll = require(`${releaseConfigPath}`);
+    const { [platform]: releaseConfig } = releaseConfigAll;
     if (['dev', 'prod'].includes(releaseType)) {
-        var properties = fs.readFileSync(gradleFile, { encoding: 'utf8' })
+        const properties = fs.readFileSync(gradleFile, { encoding: 'utf8' })
             .split(/\n/g)
-            .reduce(function (ret, val) {
-            var _a;
-            var _b = __read((_a = val === null || val === void 0 ? void 0 : val.split('=')) !== null && _a !== void 0 ? _a : []), key = _b[0], value = _b.slice(1);
+            .reduce((ret, val) => {
+            const [key, ...value] = val?.split('=') ?? [];
             if (key !== '')
                 ret[key] = value.join('=');
             return ret;
         }, {});
-        var config = require("".concat(configFilePath));
-        var newConfig_1 = __assign(__assign(__assign(__assign({}, properties), config), releaseConfig), { CURRENT_CONFIG: releaseType });
-        var parsed = Object.keys(newConfig_1)
-            .map(function (key) { return "".concat(key, "=").concat(newConfig_1[key]); })
+        const config = require(`${configFilePath}`);
+        const newConfig = { ...properties, ...config, ...releaseConfig, CURRENT_CONFIG: releaseType };
+        const parsed = Object.keys(newConfig)
+            .map(key => `${key}=${newConfig[key]}`)
             .join('\n');
         fs.writeFileSync(gradleFile, parsed);
-        fs.writeFileSync(configFilePath, JSON.stringify(newConfig_1, undefined, 4));
+        fs.writeFileSync(configFilePath, JSON.stringify(newConfig, undefined, 4));
     }
 }
-var gradleUpdateCommand = function () { return commander_1.program
+const gradleUpdateCommand = () => commander_1.program
     .command('gradle-update')
+    .description('Switch gradle.properties value from env value')
     .action(gradleUpdate)
-    .addOption(new commander_1.Option('-p, --platform <platform>', 'Platforms')
-    .choices(['android', 'ios'])["default"]('android'))
-    .addOption(new commander_1.Option('-t, --type <type>', 'Platforms')
-    .choices(['dev', 'prod'])["default"]('dev')); };
+    .addOption(methods_1.releaseType)
+    .addOption(methods_1.platformTarget);
 exports.gradleUpdateCommand = gradleUpdateCommand;
