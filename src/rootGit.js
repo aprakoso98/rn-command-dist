@@ -7,12 +7,19 @@ const methods_1 = require("../methods");
 const root = `~`;
 const rootGitFolder = `${root}/.git`;
 const movedRootGitFolder = `${root}/root-git`;
-async function rootGit({ rename }) {
-    (0, child_process_1.exec)(`ls ${rootGitFolder}`, (err) => {
+const gitignore = `${root}/.gitignore`;
+const movedGitignore = `${root}/root-gitignore`;
+function rootGit({ rename }) {
+    (0, child_process_1.exec)(`ls ${rootGitFolder}`, async (err) => {
         if (rename) {
-            if (err)
-                return (0, methods_1.thread)(`mv ${movedRootGitFolder} ${rootGitFolder}; code ${root}`);
-            return (0, methods_1.thread)(`mv ${rootGitFolder} ${movedRootGitFolder}`);
+            if (err) {
+                await (0, methods_1.thread)(`mv ${movedRootGitFolder} ${rootGitFolder}; code ${root}`);
+                await (0, methods_1.thread)(`mv ${movedGitignore} ${gitignore}`);
+                return;
+            }
+            await (0, methods_1.thread)(`mv ${rootGitFolder} ${movedRootGitFolder}`);
+            await (0, methods_1.thread)(`mv ${gitignore} ${movedGitignore}`);
+            return;
         }
         console.log(colorize(err ? 'BgRed' : 'BgGreen'), ` ${rootGitFolder} ${err ? 'not found' : 'has found'} `);
     });
