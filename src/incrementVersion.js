@@ -39,7 +39,7 @@ function incrementVersion(args, { platform, type }) {
                 if (verFormat.match(/^[0-9]*$/))
                     return parseInt(verFormat);
                 return ver;
-            }).join('.');
+            }).join('.'); // @ts-ignore
             ret[key] = newValue;
         }
         return ret;
@@ -62,7 +62,7 @@ x mean in that position will be the same
     .addOption(methods_1.platformTarget)
     .addArgument(new commander_1.Argument('[string]', 'Additional properties').argParser(value => {
     return value.split(' ').reduce((ret, val) => {
-        const [key, value] = val.split('=');
+        const [key, value] = val.split('='); // @ts-ignore
         ret[key] = value;
         return ret;
     }, {});

@@ -1,8 +1,8 @@
 "use strict";
 /// <reference path="global.d.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
-exports._COLORS = void 0;
-exports._COLORS = {
+exports._COLORS = exports._TERMINAL_COLORS = void 0;
+exports._TERMINAL_COLORS = {
     _Reset: "\x1b[0m",
     Bright: "\x1b[1m",
     Dim: "\x1b[2m",
@@ -27,11 +27,39 @@ exports._COLORS = {
     BgCyan: "\x1b[46m",
     BgWhite: "\x1b[47m",
 };
+exports._COLORS = {
+    black: "#000000",
+    borderBg: "#cdd3e0",
+    danger: "#e60f0f",
+    pink: "#e831ae",
+    dangerSoft: "#fbdbe7",
+    greyFont: "#959595",
+    greySoft: "#8b8b8b",
+    info: "#288cf7",
+    primary: "#354BC5",
+    lightBlue: "#00C6FF",
+    purple: "#904bb7",
+    purpleSoft: "#ebcbfd",
+    secondary: "#808080",
+    success: "#55c09b",
+    successHighlight: "#03DAC6",
+    successSoft: "#d6f6eb",
+    text: "#8b8b8b",
+    warning: "#f28c71",
+    white: "#ffffff"
+};
+globalThis.TERMINAL_COLORS = exports._TERMINAL_COLORS;
 globalThis.COLORS = exports._COLORS;
 globalThis.colorize = function (color) {
-    const selectedColor = exports._COLORS[color ?? 'FgWhite'];
-    return `${selectedColor}%s${exports._COLORS._Reset}`;
+    const selectedColor = exports._TERMINAL_COLORS[color ?? 'FgWhite'];
+    return `${selectedColor}%s${exports._TERMINAL_COLORS._Reset}`;
 };
 globalThis.prettyConsole = function (...objects) {
     objects.map(d => console.log(JSON.stringify(d, null, 4)));
+};
+globalThis.uuid = () => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & (0x3 | 0x8));
+        return v.toString(16);
+    });
 };

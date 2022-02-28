@@ -16,7 +16,7 @@ function getDeviceLists() {
                     let key = 'ip';
                     const device = d.split(' ').reduce((ret, s, i) => {
                         if (i % 2 === 1)
-                            key = s;
+                            key = s; // @ts-ignore
                         else
                             ret[key] = s;
                         return ret;
@@ -33,7 +33,7 @@ function getDeviceLists() {
     });
 }
 async function connectDevice({ target }) {
-    const devices = await getDeviceLists();
+    const devices = await getDeviceLists() ?? [];
     if (devices?.length > 0) {
         const selectedDevice = devices.filter((a) => a?.dev === target);
         if (selectedDevice.length > 0) {
