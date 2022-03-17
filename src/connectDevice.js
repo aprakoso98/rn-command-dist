@@ -50,6 +50,7 @@ async function connectDevice({ target }) {
 }
 const connectDeviceCommand = () => commander_1.program
     .command('connect')
+    .alias('c')
     .description('Connect your physical device using adb wireless')
     .action(connectDevice)
     .addOption(new commander_1.Option('-t, --target <target>', 'target').default('wlan0'));

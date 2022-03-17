@@ -35,6 +35,7 @@ function moveApp(args, options) {
 }
 const moveAppCommand = () => commander_1.program
     .command('move')
+    .alias('mv')
     .description('Move apk to /outputs folder')
     .action(moveApp)
     .addArgument(new commander_1.Argument('[string]', 'Move aab file').choices(['aab']))

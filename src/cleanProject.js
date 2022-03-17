@@ -13,6 +13,7 @@ function cleanProject({ platform }) {
 }
 const cleanProjectCommand = () => commander_1.program
     .command('clean')
+    .alias('cl')
     .description('Clean react-native project')
     .action(cleanProject)
     .addOption(methods_1.platformTarget);

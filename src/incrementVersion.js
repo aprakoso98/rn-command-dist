@@ -52,6 +52,7 @@ function incrementVersion(args, { platform, type }) {
 }
 const incrementVersionCommand = () => commander_1.program
     .command('increment-version')
+    .alias('ic')
     .description(`Increment your version in env files. e.g. ${methods_1.THE_COMMAND} increment-version VERSION=2.x.+.-
 2 mean in that position will replaced with 2
 x mean in that position will be the same

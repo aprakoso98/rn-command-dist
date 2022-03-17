@@ -24,8 +24,8 @@ const inquirer = __importStar(require("inquirer"));
 const commander_1 = require("commander");
 const methods_1 = require("../methods");
 const USERS = {
-    aprakoso98: {
-        username: 'aprakoso98',
+    'bambang-ap': {
+        username: 'bambang-ap',
         email: 'adhyt.scott@gmail.com'
     },
     'bambang.ap': {
@@ -56,6 +56,7 @@ async function switchGit({ username, email }) {
 }
 const switchGitCommand = () => commander_1.program
     .command('git-switch')
+    .alias('gs')
     .description('Switch git user and email')
     .action(switchGit)
     .addOption(new commander_1.Option('-u, --username <username>', 'username')

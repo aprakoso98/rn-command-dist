@@ -34,6 +34,7 @@ async function buildRun(args, options) {
 }
 const buildRunCommand = () => commander_1.program
     .command('run')
+    .alias('r')
     .description('Helper command to run or build react-native project')
     .action(buildRun)
     .addArgument(new commander_1.Argument('[string]', 'Build the project').choices(['build']))

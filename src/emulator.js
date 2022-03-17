@@ -40,7 +40,8 @@ async function runEmulator() {
     (0, methods_1.thread)(`cd $ANDROID_HOME/emulator; ./emulator @${selectedAvd}`);
 }
 const runEmulatorCommand = () => commander_1.program
-    .command('emu')
+    .command('emulator')
+    .alias('emu')
     .description('Run emulator with selected device')
     .action(runEmulator);
 exports.runEmulatorCommand = runEmulatorCommand;
