@@ -38,7 +38,6 @@ function getDeviceLists() {
 }
 async function connectDevice({ target }) {
     const devices = (await getDeviceLists()) ?? [];
-    console.log(devices);
     if (devices?.length > 0) {
         const selectedTarget = devices.length > 1
             ? (await inquirer_1.default.prompt([
