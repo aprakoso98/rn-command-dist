@@ -33,7 +33,7 @@ function gradleUpdate({ platform, type: releaseType }) {
         const properties = fs.readFileSync(gradleFile, { encoding: 'utf8' })
             .split(/\n/g)
             .reduce((ret, val) => {
-            const [key, ...value] = val?.split('=') ?? [];
+            const [key, ...value] = val.split('=') || [];
             if (key !== '')
                 ret[key] = value.join('=');
             return ret;

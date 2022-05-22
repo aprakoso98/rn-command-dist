@@ -30,15 +30,15 @@ function getDeviceLists() {
                     else
                         return {};
                 })
-                    .filter((d) => d?.src);
+                    .filter((d) => d.src);
                 resolve(devices);
             }
         });
     });
 }
 async function connectDevice({ target }) {
-    const devices = (await getDeviceLists()) ?? [];
-    if (devices?.length > 0) {
+    const devices = (await getDeviceLists()) || [];
+    if (devices.length > 0) {
         const selectedTarget = devices.length > 1
             ? (await inquirer_1.default.prompt([
                 {
@@ -49,8 +49,10 @@ async function connectDevice({ target }) {
                 },
             ])).selectedDevice
             : devices[0].dev;
-        const selectedDevice = devices.find((a) => a?.dev === selectedTarget);
-        (0, child_process_1.exec)(`adb disconnect; adb tcpip 5555; adb connect ${selectedDevice?.src}:5555`, (err, msg) => {
+        const selectedDevice = devices.find((a) => a.dev === selectedTarget) || {
+            src: "",
+        };
+        (0, child_process_1.exec)(`adb disconnect; adb tcpip 5555; adb connect ${selectedDevice.src}:5555`, (err, msg) => {
             if (err)
                 console.error(err);
             else

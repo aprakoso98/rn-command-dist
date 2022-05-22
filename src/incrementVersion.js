@@ -29,7 +29,7 @@ function incrementVersion(args, { platform, type }) {
     const { [platform]: platformConfig, ...otherPlatform } = releaseConfig;
     const keys = Object.keys(args);
     const newReleaseConfigPlatform = keys.reduce((ret, key) => {
-        const versionFormat = args?.[key].split('.') ?? [];
+        const versionFormat = args[key].split('.') || [];
         if (key in platformConfig) {
             const exValue = platformConfig[key];
             const newValue = exValue.split('.').map((ver, i) => {

@@ -51,7 +51,7 @@ exports._COLORS = {
 globalThis.TERMINAL_COLORS = exports._TERMINAL_COLORS;
 globalThis.COLORS = exports._COLORS;
 globalThis.colorize = function (color) {
-    const selectedColor = exports._TERMINAL_COLORS[color ?? 'FgWhite'];
+    const selectedColor = exports._TERMINAL_COLORS[color || 'FgWhite'];
     return `${selectedColor}%s${exports._TERMINAL_COLORS._Reset}`;
 };
 globalThis.prettyConsole = function (...objects) {

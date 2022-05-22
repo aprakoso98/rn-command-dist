@@ -24,8 +24,8 @@ const fs = __importStar(require("fs"));
 const commander_1 = require("commander");
 const methods_1 = require("../methods");
 function errHandling(err) {
-    if (err?.message)
-        console.log(colorize('FgRed'), err?.message);
+    if (err.message)
+        console.log(colorize('FgRed'), err.message);
 }
 async function init() {
     const data = JSON.stringify({ ios: {}, android: {} }, null, 4);
