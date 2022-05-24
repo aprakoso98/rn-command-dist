@@ -15,7 +15,7 @@ async function moveApp(args, options) {
     if (!fs_1.default.existsSync(outputFolder))
         fs_1.default.mkdirSync(outputFolder);
     const isAab = args === "aab";
-    const { list, additional, source, filename: _filename } = options;
+    const { list, additional, source, filename: _filename, skipList } = options;
     const { name: projectName, } = require(`${process.env.PWD}/package.json`);
     const apkPath = `./${ANDROID_PATH}/app/build/outputs/apk${source || "/release/app-release.apk"}`;
     const aabPath = `./${ANDROID_PATH}/app/build/outputs/bundle${source || "/release/app.aab"}`;
@@ -30,9 +30,11 @@ async function moveApp(args, options) {
                 `${projectName}-${(0, moment_1.default)().format("YYYY-MM-DD-HH-mm-ss")}.apk`;
     }
     filename = `${additional}${filename}`;
-    const fileChoossed = await getListApk(isAab);
-    if (list && fileChoossed) {
-        pathFile = fileChoossed;
+    if (!skipList) {
+        const fileChoossed = await getListApk(isAab);
+        if (list && fileChoossed) {
+            pathFile = fileChoossed;
+        }
     }
     const command = `cp "${pathFile}" "./${outputFolder}/${filename}"`;
     (0, child_process_1.exec)(command, (err) => {
@@ -50,6 +52,7 @@ const moveAppCommand = () => commander_1.program
     .action(moveApp)
     .addArgument(new commander_1.Argument("[string]", "Move aab file").choices(["aab"]))
     .addOption(new commander_1.Option("-l, --list", "Show list apk, and select to move").default(false))
+    .addOption(new commander_1.Option("-sl, --skip-list", "Skip apk chooser").default(false))
     .addOption(new commander_1.Option("-s, --source <source>", "Source apk you want to move"))
     .addOption(new commander_1.Option("-f, --filename <filename>", "Filename of moved apk"))
     .addOption(new commander_1.Option("-a, --additional <string>", 'Additional filename will be added to first character. e.g. "-a SG-" -> "SG-{filename}"').default(""));
