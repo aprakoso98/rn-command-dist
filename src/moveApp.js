@@ -18,7 +18,7 @@ async function moveApp(args, options) {
     const { list, additional, source, filename: _filename, skipList } = options;
     const { name: projectName, } = require(`${process.env.PWD}/package.json`);
     const apkPath = `./${ANDROID_PATH}/app/build/outputs/apk${source || "/release/app-release.apk"}`;
-    const aabPath = `./${ANDROID_PATH}/app/build/outputs/bundle${source || "/release/app.aab"}`;
+    const aabPath = `./${ANDROID_PATH}/app/build/outputs/bundle${source || "/release/app-release.aab"}`;
     let filename = `${projectName}-Bundle-${(0, moment_1.default)().format("YYYY-MM-DD-HH-mm-ss")}.aab`;
     let pathFile = apkPath;
     if (isAab) {
